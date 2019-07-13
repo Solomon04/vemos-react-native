@@ -45,7 +45,7 @@ export default class App extends React.Component{
         return (
             <Post
                 data='Yo'
-                thumbnail={this.state.post.thumbnail}
+                thumbnail={this.state.post.url}
                 height={this.state.post.thumbnail_height}
                 width={this.state.post.thumbnail_width}
                 title={this.state.post.title}
@@ -53,6 +53,7 @@ export default class App extends React.Component{
                 author={this.state.post.author}
                 score={this.state.post.score}
                 comments={this.state.post.num_comments}
+                url={"https://www.reddit.com" + this.state.post.permalink}
             />
         );
     }

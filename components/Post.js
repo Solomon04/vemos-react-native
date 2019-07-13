@@ -1,7 +1,24 @@
 import React from 'react';
-import {View, Text, Image, StyleSheet} from 'react-native';
+import {View, Text, Image, StyleSheet, Linking, Button} from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default class Post extends React.Component {
+
+    // goToURL(url){
+    //     Linking.openURL(url).catch(err => console.error('An error occurred', err));
+    // }
+
+    //static propTypes = { url: React.PropTypes.string };
+    handleClick = () => {
+        Linking.canOpenURL(this.props.url).then(supported => {
+            if (supported) {
+                Linking.openURL(this.props.url);
+            } else {
+                console.log("Don't know how to open URI: " + this.props.url);
+            }
+        });
+    };
+
     render() {
         return (
             <View style={styles.container}>
@@ -11,41 +28,40 @@ export default class Post extends React.Component {
                     <Image source={this.props.thumbnail} style={{height: this.props.height*2}}/>
                     {/*<View style={{flexBasis:50, height: 50, backgroundColor: 'powderblue'}} />*/}
                     <View style={{flex: 1, flexDirection: 'row'}}>
-                        <View style={{flexGrow: 1, backgroundColor: 'steelblue', alignItems: 'center', justifyContent: 'center'}} >
-                            <Text style={styles.subText}>Score: {this.props.score}</Text>
+                        <View style={{flexGrow: 1, alignItems: 'center', justifyContent: 'center'}} >
+                            <Icon.Button name="thumbs-up" size={24} backgroundColor="#3b5998">
+                                <Text style={{ fontFamily: 'Helvetica', fontSize: 18,  fontWeight: 'bold', color: 'white'}}>
+                                    {this.props.score}
+                                </Text>
+                            </Icon.Button>
                         </View>
-                        <View style={{flexGrow: 1, backgroundColor: 'skyblue', alignItems: 'center', justifyContent: 'center'}} >
-                            <Text style={styles.subText}>Comments: {this.props.comments}</Text>
+                        <View style={{flexGrow: 1, alignItems: 'center', justifyContent: 'center'}} >
+                            {/*<Icon name="rocket" size={30} color="#900" />*/}
+                            {/*<Text style={styles.subText}>Comments: {this.props.comments}</Text>*/}
+                            <Icon.Button name="comment" size={24} backgroundColor="#3b5998">
+                                <Text style={{ fontFamily: 'Helvetica', fontSize: 18,  fontWeight: 'bold', color: 'white'}}>
+                                    {this.props.comments}
+                                </Text>
+                            </Icon.Button>
                         </View>
                         {/*<View style={{flexGrow: 1, backgroundColor: 'skyblue'}} />*/}
                         <View style={{width: 0, height: 50, backgroundColor: 'powderblue'}} />
                     </View>
-                    <Text style={styles.description}>
-                        Posted by <Text style={{textDecoration: 'underline'}}> {this.props.author}</Text> on <Text style={{textDecoration: 'underline'}}> {this.props.date}</Text>
-                    </Text>
+                    <View style={{alignItems: 'stretch', justifyContent: 'center', marginVertical: '25px'}}>
+                        <Button
+                            onPress={this.handleClick}
+                            title="View Post On Reddit"
+                            color="#007bff"
+                            accessibilityLabel="View Post On Reddit"
+                            style={{padding: '20px'}}
+                        />
+                    </View>
+                    <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                        <Text style={styles.description}>
+                            Posted by <Text style={{textDecorationLine: 'underline', fontWeight: 'italic'}}> {this.props.author}</Text> on <Text style={{textDecorationLine: 'underline'}}> {this.props.date}</Text>
+                        </Text>
+                    </View>
                 </View>
-                    {/*<Text>*/}
-                        {/*<Text>T</Text>*/}
-                        {/*<Text>T</Text>*/}
-                    {/*</Text>*/}
-                    {/*<View style={{width: 50, height: 50, backgroundColor: 'powderblue'}} />*/}
-                    {/*<View style={{width: 50, height: 50, backgroundColor: 'skyblue'}} />*/}
-                    {/*<View style={{width: 50, height: 50, backgroundColor: 'steelblue'}} />*/}
-                    {/*<View style={{flex: 1, flexDirection: 'column'}}>*/}
-                        {/*<View style={{flex: 0.5, height: 50, backgroundColor: 'powderblue'}} />*/}
-                        {/*<View style={{flex: 0.5,height: 50, backgroundColor: 'skyblue'}} />*/}
-                    {/*</View>*/}
-
-                {/*<View style={styles.imgSection}>*/}
-                    {/*<Image source={this.props.thumbnail} style={{width: this.props.width*2, height: this.props.height*2}}/>*/}
-                {/*</View>*/}
-                {/*<Text>*/}
-                    {/*{"\n"}*/}
-                    {/*{this.props.date}{"\n"}*/}
-                    {/*{this.props.author}{"\n"}*/}
-                    {/*{this.props.score}{"\n"}*/}
-                    {/*{this.props.comments}*/}
-                {/*</Text>*/}
             </View>
         );
     }
@@ -54,7 +70,7 @@ export default class Post extends React.Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'gray',
+        backgroundColor: 'rgb(245, 245, 245)',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -66,8 +82,9 @@ const styles = StyleSheet.create({
     },
 
     titleText: {
-        fontSize: 24,
+        fontSize: 28,
         fontWeight: 'bold',
+        fontFamily: 'Helvetica'
     },
 
     subText: {
